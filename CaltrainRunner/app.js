@@ -5,8 +5,31 @@
 
 var express = require('express')
   , routes = require('./routes');
+var util = require('util'),
+    twitter = require('twitter'),
+    credentials = require('./credentials.js');
+var twit = new twitter({
+    consumer_key: credentials.consumer_key,
+    consumer_secret: credentials.consumer_secret,
+    access_token_key: credentials.access_token_key,
+    access_token_secret: credentials.access_token_secret
+});
 
 var app = module.exports = express.createServer();
+
+twit.stream('user', {track:'caltrain'}, function(stream) {
+  stream.on('data', function (data) {
+    console.dir(data);
+    app.set('tweets', data);
+  });
+  stream.on('end', function (response) {
+    // Handle a disconnection
+  });
+  stream.on('destroy', function (response) {
+    // Handle a 'silent' disconnection from Twitter, no end/error event fired
+  });
+});
+
 
 // Configuration
 
