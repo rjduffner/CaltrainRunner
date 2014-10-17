@@ -55,11 +55,11 @@ exports.get_departures = function(req, res){
             })
             .on("end", function(){
                 for (var i = 0; i < tripListNB.length; i++) {
-                    tripListNB[i]["direction"] = 'Northbound';
+                    tripListNB[i]["direction"] = 'North';
                 };
 
                 for (var i = 0; i < tripListSB.length; i++) {
-                    tripListSB[i]["direction"] = 'Southbound';
+                    tripListSB[i]["direction"] = 'South';
                 };
 
                 var sortedNBTrips = generateResponse(tripListNB);
