@@ -22,6 +22,11 @@ function get_departures() {
             var diff = arrivalDate - currentDate;
             var mm = Math.floor(diff / 1000 / 60);
             data[i].diff = mm;
+            if (mm < 6){
+                data[i].soon='soon';
+            }
+
+
         }
 
         var finalTrainData = {'departing' : data}
