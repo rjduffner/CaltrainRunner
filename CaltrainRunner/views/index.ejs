@@ -36,8 +36,10 @@
     <table>
         <thead>
             <tr>
+                <th></th>
                 <th>Service</th>
                 <th>Direction</th>
+                <th>Train Number</th>
                 <th>Arrival Time</th>
                 <th>Final Stop</th>
             </tr>
@@ -45,10 +47,12 @@
         <tbody>
             {{ #departing }}
             <tr>
-                <td>{{ serviceType }}</td>
+                <td>{{ diff }}</td>
+                <td>{{ service_type }}</td>
                 <td>{{ direction }}</td>
-                <td>{{ arrivalTime }}</td>
-                <td>{{ tripHeadsign }}</td>
+                <td>{{ train_number }}</td>
+                <td>{{ arrival_time }}</td>
+                <td>{{ trip_head_sign }}</td>
             </tr>
             {{ /departing }}
         </tbody>
@@ -67,7 +71,7 @@
             <li> {{ wind.direction }} {{ wind.speed }} {{ units.speed }} </li>
         </ul>
     </div>
-    <div class="span6">
+    <div class="span6 weather-visual">
         <img class="image" src="{{ image }}">
     </div>
 

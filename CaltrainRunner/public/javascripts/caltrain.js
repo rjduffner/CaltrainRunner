@@ -25,15 +25,28 @@ var trainData = { northbound: [
     }]      
 };
 
+$.get( "/get_departures")
+.done(function(data) {
+    currentDate = new Date();
+    for (item in data){
+        var arrivalDate = new Date(item.arrival_time)
+        var diff  =  new Date (arrivalDate.getTime() - currentDate.getTime());
+        item.diff = diff.getMinutes()
+    }
 
-function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-        var x = a[key]; var y = b[key];
-        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
-}
+        
 
-var finalTrainData = {'departing' : sortByKey(trainData.northbound.concat(trainData.southbound), 'arrivalTime')}
-var tpl = $('#table-template').html()
-var html = Mustache.to_html(tpl, finalTrainData);
-$('#train-data').html(html);
+    var finalTrainData = {'departing' : data}
+    var tpl = $('#table-template').html()
+    var html = Mustache.to_html(tpl, finalTrainData);
+    $('#train-data').html(html);
+
+
+});
+
+
+
+
+
+
+
