@@ -36,7 +36,6 @@ exports.get_departures = function(req, res){
 
 
     function getFutureTrips(serviceType, stationIDNB, stationIDSB, callback_2) {
-        console.log(serviceType);
         var serviceIDPattern = '^[0-9]*-'
         var re = new RegExp(serviceIDPattern);
         var tripListNB = [];
@@ -55,12 +54,6 @@ exports.get_departures = function(req, res){
                 }
             })
             .on("end", function(){
-                console.log(tripListNB)
-                console.log(tripListNB.length)
-
-                console.log(tripListSB)
-                console.log(tripListSB.length)
-
                 for (var i = 0; i < tripListNB.length; i++) {
                     tripListNB[i]["direction"] = 'Northbound';
                 };
@@ -73,7 +66,6 @@ exports.get_departures = function(req, res){
                 var sortedSBTrips = generateResponse(tripListSB);
 
                 callback_2(sortedNBTrips.slice(0,5), sortedSBTrips.slice(0,5))
-                console.log("done");
             });
     }
 
@@ -87,6 +79,7 @@ exports.get_departures = function(req, res){
                     if (all_trips[i]["trip_id"] === data.trip_id){
                         all_trips[i]["service_type"] = getServiceType(data.route_id);
                         all_trips[i]["trip_head_sign"] = data.trip_headsign;
+                        all_trips[i]["train_number"] = data.trip_short_name;
                         delete all_trips[i]["departure_time"];
                         delete all_trips[i]["stop_id"];
                         delete all_trips[i]["pickup_type"];
