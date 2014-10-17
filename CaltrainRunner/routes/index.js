@@ -5,7 +5,7 @@
 var csv = require("fast-csv");
 
 exports.index = function(req, res){
-    res.render('index', { title: 'caltrain' , tweets: 'Hello'})
+    res.render('index', { title: 'Caltrain Runner' , tweets: 'Hello'})
 };
 
 exports.get_departures = function(req, res){
