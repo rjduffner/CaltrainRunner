@@ -21,6 +21,12 @@
         <div class="span4">
             <div class="weather module" id="weather">
             </div>
+
+            <div class="sports module" id="sports">
+            "HELLO"
+            </div>
+
+
             <div class="">
 
            <a class="twitter-timeline"  href="https://twitter.com/caltrain" data-widget-id="522884179529187328">Tweets by @caltrain</a>
@@ -60,19 +66,25 @@
 </script>
 
 <script type="text/html" id="weather-template">
-    <div class="span6">
+    <div class="span6 weather-text">
         <h2>
+            {{ city }}, {{ region }}
             <i class="icon {{ code }}"></i>
             {{ temp }}&deg {{ units.temp }}
         </h2>
-        <ul>
-            <li> {{ city }} {{ region }} </li>
-            <li> {{currently }} </li>
-            <li> {{ wind.direction }} {{ wind.speed }} {{ units.speed }} </li>
-        </ul>
+        <div> {{high}}/{{low}}</div>
+        <div>{{currently }}</div>
+        <div>{{ wind.direction }} {{ wind.speed }} {{ units.speed }} </div>
+        <div>Sunrise: {{ sunrise }} Sunset: {{ sunset }}</div>
     </div>
     <div class="span6 weather-visual">
         <img class="image" src="{{ image }}">
     </div>
 
+</script>
+
+
+<script type="text/html" id="sports-template">
+    <div class="span6">
+    </div>
 </script>
