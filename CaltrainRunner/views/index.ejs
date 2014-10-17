@@ -36,9 +36,9 @@
     <table>
         <thead>
             <tr>
-                <th></th>
-                <th>Service</th>
                 <th>Direction</th>
+                <th>ETA</th>
+                <th>Service</th>
                 <th>Train Number</th>
                 <th>Arrival Time</th>
                 <th>Final Stop</th>
@@ -47,9 +47,9 @@
         <tbody>
             {{ #departing }}
             <tr>
-                <td>{{ diff }}</td>
-                <td>{{ service_type }}</td>
                 <td>{{ direction }}</td>
+                <td>{{ diff }} Minutes</td>
+                <td>{{ service_type }}</td>
                 <td>{{ train_number }}</td>
                 <td>{{ arrival_time }}</td>
                 <td>{{ trip_head_sign }}</td>

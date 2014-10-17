@@ -27,14 +27,32 @@ var trainData = { northbound: [
 
 $.get( "/get_departures")
 .done(function(data) {
-    currentDate = new Date();
-    for (item in data){
-        var arrivalDate = new Date(item.arrival_time)
-        var diff  =  new Date (arrivalDate.getTime() - currentDate.getTime());
-        item.diff = diff.getMinutes()
-    }
+    
+    
+    var arrayLength = data.length;
+    for (var i = 0; i < arrayLength; i++) { 
+        var arrivalSplit = data[i].arrival_time.split(':');
 
-        
+
+
+
+        currentDate = new Date(); 
+        var arrivalDate = new Date(currentDate.getFullYear(),
+                                   currentDate.getMonth(),
+                                   currentDate.getDate(),
+                                   arrivalSplit[0],
+                                   arrivalSplit[1],
+                                   arrivalSplit[2]);
+
+
+
+
+        var diff = arrivalDate - currentDate;
+        var mm = Math.floor(diff / 1000 / 60);
+        data[i].diff = mm;
+
+
+    }
 
     var finalTrainData = {'departing' : data}
     var tpl = $('#table-template').html()
