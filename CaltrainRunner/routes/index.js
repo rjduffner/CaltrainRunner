@@ -10,10 +10,6 @@ exports.index = function(req, res){
 
 exports.get_departures = function(req, res){
     var currentDate = new Date();
-    var day = currentDate.getDate();
-    var month = currentDate.getMonth() + 1;
-    var year = currentDate.getFullYear();
-    var formattedDate = month + "/" + day + "/" + year;
 
     function getUpcomingCaltrainTrips(currentDate, stationIDNB, stationIDSB) {
         getCaltrainServiceType(currentDate, stationIDNB, stationIDSB, getFutureTrips);
@@ -124,19 +120,38 @@ exports.get_departures = function(req, res){
 
         return serviceType;
     }
-
-    function generateResponse(trips){
-        var response = sortByKey(trips, 'arrival_time');
-        return response
-    }
-
-    function sortByKey(array, key) {
-        return array.sort(function(a, b) {
-            var x = a[key]; var y = b[key];
-            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-        });
-    }
-
-
     getUpcomingCaltrainTrips(currentDate, '70171', '70172');
+}
+
+exports.get_games = function(req, res){
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = currentDate.getMonth() + 1;
+    var day = currentDate.getDate();
+
+    var currentDateStr = month.toString() + '/' + day.toString() + '/' + year.toString();
+    var games_today = [];
+    csv
+        .fromPath("data/sharks20142015.csv", {headers: true, discardUnmappedColumns: true})
+        .on("data", function(data) {
+            if (currentDateStr === data.START_DATE) {
+                games_today.push(data);
+            }
+        })
+        .on("end", function() {
+            games_today = generateResponse(games_today, 'START_TIME');
+            res.send(games_today);
+        });
+}
+
+function generateResponse(trips){
+    var response = sortByKey(trips, 'arrival_time');
+    return response
+}
+
+function sortByKey(array, key) {
+    return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
 }
