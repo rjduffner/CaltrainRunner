@@ -21,8 +21,7 @@ exports.get_departures = function(req, res){
 
     function getCaltrainServiceType(currentDate, stationIDNB, stationIDSB, callback){
         weekday = new Array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday')
-        // dayOfWeek = weekday[currentDate.getDay()]
-        dayOfWeek = weekday[3]
+        dayOfWeek = weekday[currentDate.getDay()];
         csv
             .fromPath("data/caltrain/calendar.txt", {headers: true, discardUnmappedColumns: true})
             .on("data", function(data){
@@ -70,7 +69,10 @@ exports.get_departures = function(req, res){
                     tripListSB[i]["direction"] = 'Southbound';
                 };
 
-                callback_2(tripListNB.slice(0,5), tripListSB.slice(0,5))
+                var sortedNBTrips = generateResponse(tripListNB);
+                var sortedSBTrips = generateResponse(tripListSB);
+
+                callback_2(sortedNBTrips.slice(0,5), sortedSBTrips.slice(0,5))
                 console.log("done");
             });
     }
@@ -95,14 +97,13 @@ exports.get_departures = function(req, res){
 
             })
             .on("end", function(){
-                var response = generateResponse(tripsNB, tripsSB);
+                var response = generateResponse(all_trips);
                 res.send(response);
             });
     }
 
     function inFuture(trip_time){
-        // currentTime = new Date().toLocaleTimeString()
-        currentTime = '10:45:56';
+        currentTime = new Date().toLocaleTimeString();
         if (currentTime < trip_time) {
             return true;
         }
@@ -131,13 +132,8 @@ exports.get_departures = function(req, res){
         return serviceType;
     }
 
-    function generateResponse(tripsNB, tripsSB){
-        var response = JSON.parse('{"northbound" : [], "southbound": []}')
-        sortedNBTrips = sortByKey(tripsNB, 'arrival_time');
-        sortedSBTrips = sortByKey(tripsSB, 'arrival_time');
-
-        response.northbound = sortedNBTrips;
-        response.southbound = sortedSBTrips;
+    function generateResponse(trips){
+        var response = sortByKey(trips, 'arrival_time');
         return response
     }
 
