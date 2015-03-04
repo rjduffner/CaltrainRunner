@@ -12,11 +12,12 @@ var app = module.exports = express.createServer();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
+  
+  app.use('/caltrainrunner/', app.router);
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.compiler({ src : __dirname + '/public', enable: ['less']}));
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+  app.use('/caltrainrunner/', express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){

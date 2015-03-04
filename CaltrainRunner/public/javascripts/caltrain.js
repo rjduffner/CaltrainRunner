@@ -1,5 +1,5 @@
 function get_departures() {
-    $.get( "/get_departures")
+    $.get( "/caltrainrunner/get_departures")
     .done(function(data) {
         var arrayLength = data.length;
         for (var i = 0; i < arrayLength; i++) { 
