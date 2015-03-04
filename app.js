@@ -1,39 +1,22 @@
+var express = require('express');
+var routes = require('./routes');
+var path = require('path');
+var lessMiddleware = require('less-middleware');
 
-/**
- * Module dependencies.
- */
+var app = express();
 
-var express = require('express')
-  , routes = require('./routes');
+app.set('views',__dirname + '/views');
+app.set('view engine', 'ejs');
 
-var app = module.exports = express.createServer();
+app.use('/caltrainrunner/', lessMiddleware(__dirname + '/public', {compress: true}));
+app.use('/caltrainrunner/', express.static(path.join(__dirname, 'public')));
 
-// Configuration
-app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
-  
-  app.use('/caltrainrunner/', app.router);
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.compiler({ src : __dirname + '/public', enable: ['less']}));
-  app.use('/caltrainrunner/', express.static(__dirname + '/public'));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler());
-});
+app.use('/caltrainrunner/', app.router);
+app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 // Routes
 app.get('/', routes.index);
 app.get('/get_departures', routes.get_departures)
 app.get('/get_games', routes.get_games)
 
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-});
-
+app.listen(3000);
